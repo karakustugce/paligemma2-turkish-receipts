@@ -51,6 +51,8 @@ def load_manifest(path, image_root):
         raise ValueError("The frozen evaluation set must contain 30–50 documents.")
     ids, hashes, docs = set(), set(), []
     for row in source:
+        if row.get("annotation_status") and row["annotation_status"] != "human_verified":
+            raise ValueError("Draft reference amounts need human verification before scoring")
         doc_id = row["doc_id"].strip()
         if not re.fullmatch(r"[A-Za-z0-9_-]+", doc_id) or doc_id in ids:
             raise ValueError(f"Invalid or repeated doc_id: {doc_id}")
@@ -96,21 +98,25 @@ def wilson(successes, n, z=1.96):
     return max(0.0, center-radius), min(1.0, center+radius)
 
 
-def paired_stats(rows, bootstrap_samples=10000, seed=2026):
-    groups = {224: {}, 448: {}}
+def paired_stats(rows, bootstrap_samples=10000, seed=2026,
+                 condition_key="resolution", condition_values=(224, 448)):
+    first, second = condition_values
+    if first == second or bootstrap_samples < 100:
+        raise ValueError("Two distinct conditions and at least 100 bootstrap draws are required")
+    groups = {first: {}, second: {}}
     for row in rows:
-        resolution = row["resolution"]
+        resolution = row[condition_key]
         if resolution not in groups or type(row["correct"]) is not bool:
             raise ValueError("Invalid resolution or correctness flag")
         if row["doc_id"] in groups[resolution]:
             raise ValueError("Duplicate model/document pair")
         groups[resolution][row["doc_id"]] = row
-    if not groups[224] or groups[224].keys() != groups[448].keys():
+    if not groups[first] or groups[first].keys() != groups[second].keys():
         raise ValueError("Incomplete paired run; no headline comparison generated")
     deltas = []
     only224 = only448 = both = neither = 0
-    for doc_id in sorted(groups[224]):
-        a, b = groups[224][doc_id], groups[448][doc_id]
+    for doc_id in sorted(groups[first]):
+        a, b = groups[first][doc_id], groups[second][doc_id]
         if (a["sha256"], a["true_total"]) != (b["sha256"], b["true_total"]):
             raise ValueError("Image or ground truth differs across models")
         x, y = a["correct"], b["correct"]
@@ -122,9 +128,10 @@ def paired_stats(rows, bootstrap_samples=10000, seed=2026):
     pvalue = 1.0 if not discordant else min(1.0, 2 * sum(math.comb(discordant, k) for k in range(min(only224, only448)+1)) / 2**discordant)
     rng = random.Random(seed)
     boot = sorted(sum(rng.choices(deltas, k=n))/n for _ in range(bootstrap_samples))
-    return {"n": n, "both_correct": both, "both_wrong": neither,
-            "only_224_correct": only224, "only_448_correct": only448,
-            "accuracy_difference_448_minus_224": sum(deltas)/n,
+    return {"n": n, "condition_key": condition_key, "first": first, "second": second,
+            "both_correct": both, "both_wrong": neither,
+            f"only_{first}_correct": only224, f"only_{second}_correct": only448,
+            f"accuracy_difference_{second}_minus_{first}": sum(deltas)/n,
             "paired_bootstrap95": [boot[int(.025*bootstrap_samples)], boot[min(int(.975*bootstrap_samples), bootstrap_samples-1)]],
             "mcnemar_exact_p": pvalue, "bootstrap_seed": seed, "bootstrap_samples": bootstrap_samples}
 
