@@ -42,3 +42,7 @@ Sonraki adımda insanın hazırlama, kontrol ve düzeltme sürelerini, çalışa
 Yazıda veri kaynağı, örneklem sayısı/dağılımı, soru, ölçütler, modeller, ana sonuçlar, belirsizlik ve sınırlılıklar bulunmalı. Kod ve anonimleştirilmiş örneklerin paylaşımı ayrı kararlar. Kamuya açık depoya model ağırlığı, token veya izin verilmeyen fiş görüntüsü koymayın.
 
 Ana sonucun biçimi: “Aynı N fişte, Türkçe soruyla mix-224 X, mix-448 Y tutarı tam doğru çıkardı. Fark Z yüzde puan; eşleştirilmiş belirsizlik aralığı … . GPU üretim süresi … . İnsan emeği ayrıca ölçülmedi.” Boşluklar yalnız gerçek koşunun çıktılarıyla doldurulur.
+
+## Hazırlanan kaynak örneklem
+
+Kapsam ve tekrar kontrolünden sonra 49 gerçek görüntü seçildi. Referans toplamları insan doğrulaması bekliyor; kaynak ve hazırlama akışı [veri notunda](KAYNAK_VERI.md). Referans kayıtları açık depoya yüklenmiyor.

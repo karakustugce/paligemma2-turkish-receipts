@@ -4,6 +4,10 @@ __pycache__/
 .env
 data/images/
 data/manifest.csv
+data/kaggle_sample/
+data/*_draft.csv
+data/*private*
+data/provenance.json
 results/*
 !results/STATUS.md
 .ipynb_checkpoints/
