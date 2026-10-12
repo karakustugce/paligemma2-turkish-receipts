@@ -22,6 +22,8 @@ Kısa/uzun ve net/zor etiketlerini model cevaplarını görmeden belirleyin; tan
 
 İki model: `google/paligemma2-3b-mix-224` ve `google/paligemma2-3b-mix-448`.
 
+İki soru dili: aynı soru İngilizce (`answer en ...`) ve Türkçe (`answer tr ...`) sorulur. Her fiş dört koşulda okunur. Türkçe soru birebir çeviri değil, aynı çıktıyı (iki ondalıklı tek sayı) ister. Sorular `pg2receipts/__init__.py` içinde sabittir. Birincil karşılaştırma Türkçe soruda 448 − 224'tür.
+
 - Aynı belgeler, soru, FP16 hassasiyet, üretim sınırı ve ayrıştırma kuralı.
 - Model/processor sürümleri ve yazılım sürümleri kaydedilir.
 - Modeller sırayla, tek görüntüyle çalışır; ilk ısınma sonucu puanlanmaz.
@@ -39,4 +41,4 @@ Sonraki adımda insanın hazırlama, kontrol ve düzeltme sürelerini, çalışa
 
 Yazıda veri kaynağı, örneklem sayısı/dağılımı, soru, ölçütler, modeller, ana sonuçlar, belirsizlik ve sınırlılıklar bulunmalı. Kod ve anonimleştirilmiş örneklerin paylaşımı ayrı kararlar. Kamuya açık depoya model ağırlığı, token veya izin verilmeyen fiş görüntüsü koymayın.
 
-Ana sonucun biçimi: “Aynı N fişte mix-224 X, mix-448 Y tutarı tam doğru çıkardı. Fark Z yüzde puan; eşleştirilmiş belirsizlik aralığı … . GPU üretim süresi … . İnsan emeği ayrıca ölçülmedi.” Boşluklar yalnız gerçek koşunun çıktılarıyla doldurulur.
+Ana sonucun biçimi: “Aynı N fişte, Türkçe soruyla mix-224 X, mix-448 Y tutarı tam doğru çıkardı. Fark Z yüzde puan; eşleştirilmiş belirsizlik aralığı … . GPU üretim süresi … . İnsan emeği ayrıca ölçülmedi.” Boşluklar yalnız gerçek koşunun çıktılarıyla doldurulur.
