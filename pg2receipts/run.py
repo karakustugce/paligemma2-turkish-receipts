@@ -11,7 +11,7 @@ import time
 from datetime import datetime, timezone
 from pathlib import Path
 
-from . import MODELS, PROMPT, __version__
+from . import MODELS, PROMPTS, __version__
 from .core import load_manifest, read_jsonl, score_answer
 
 
@@ -29,7 +29,9 @@ def run(manifest, image_root, output, resume=False):
     frozen = [{k: v for k, v in doc.items() if k != "image"} for doc in docs]
     canonical = json.dumps(frozen, ensure_ascii=False, sort_keys=True).encode()
     fingerprint = hashlib.sha256(canonical).hexdigest()
-    identity = {"manifest_fingerprint": fingerprint, "documents": frozen, "prompt": PROMPT,
+    source = b"".join(p.name.encode()+p.read_bytes() for p in sorted(Path(__file__).parent.glob("*.py")))
+    identity = {"manifest_fingerprint": fingerprint, "documents": frozen, "prompts": PROMPTS,
+                "source_sha256": hashlib.sha256(source).hexdigest(),
                 "package_version": __version__, "dtype": "float16", "max_new_tokens": 32,
                 "sampling": False, "seed": 2026, "attention": "eager"}
     cfg_path = out / "run_config.json"; rows_path = out / "predictions.jsonl"
@@ -57,17 +59,18 @@ def run(manifest, image_root, output, resume=False):
     existing = read_jsonl(rows_path) if rows_path.exists() else []
     completed = set()
     for row in existing:
-        key = (row["resolution"], row["doc_id"])
-        if key in completed or row["doc_id"] not in by_id or row["resolution"] not in MODELS:
+        key = (row["resolution"], row.get("prompt_language"), row["doc_id"])
+        if key in completed or row["doc_id"] not in by_id or row["resolution"] not in MODELS or row.get("prompt_language") not in PROMPTS:
             raise ValueError("Invalid or repeated existing prediction")
         doc = by_id[row["doc_id"]]
         r = row["resolution"]
-        if (row["sha256"], row["true_total"], row["model_id"], row["revision"]) != (doc["sha256"], doc["true_total"], MODELS[r], cfg["model_revisions"][str(r)]):
+        if (row["sha256"], row["true_total"], row["model_id"], row["revision"], row.get("prompt")) != (doc["sha256"], doc["true_total"], MODELS[r], cfg["model_revisions"][str(r)], PROMPTS[row["prompt_language"]]):
             raise ValueError("Existing predictions do not match this run")
         completed.add(key)
     resolutions = list(MODELS); random.Random(2026).shuffle(resolutions)
     for resolution in resolutions:
-        pending = [d for d in docs if (resolution, d["doc_id"]) not in completed]
+        pending = [(language, d) for language in PROMPTS for d in docs
+                   if (resolution, language, d["doc_id"]) not in completed]
         if not pending:
             continue
         model_id = MODELS[resolution]; revision = cfg["model_revisions"][str(resolution)]
@@ -79,12 +82,12 @@ def run(manifest, image_root, output, resume=False):
         if model.config.vision_config.image_size != resolution:
             raise ValueError("Unexpected checkpoint image size")
 
-        def infer(doc):
+        def infer(doc, language):
             with Image.open(doc["image"]) as raw:
                 image = ImageOps.exif_transpose(raw).convert("RGB")
                 width, height = image.size
                 began = time.perf_counter()
-                inputs = processor(images=image, text=PROMPT, return_tensors="pt")
+                inputs = processor(images=image, text=PROMPTS[language], return_tensors="pt")
             if tuple(inputs["pixel_values"].shape[-2:]) != (resolution, resolution):
                 raise ValueError("Unexpected processor output size")
             inputs = {k: v.to("cuda", dtype=torch.float16) if v.is_floating_point() else v.to("cuda") for k, v in inputs.items()}
@@ -102,24 +105,26 @@ def run(manifest, image_root, output, resume=False):
             del inputs, generated
             return answer, metrics
 
-        infer(docs[0])  # warm-up; excluded from scoring/timing
+        for language in PROMPTS:
+            infer(docs[0], language)  # warm-up per language; excluded from scoring/timing
         order = pending.copy(); random.Random(2026).shuffle(order)
         try:
             with rows_path.open("a", encoding="utf-8") as f:
-                for doc in order:
-                    raw, metrics = infer(doc)
+                for language, doc in order:
+                    raw, metrics = infer(doc, language)
                     row = {**{k: v for k, v in doc.items() if k != "image"},
-                           "resolution": resolution, "model_id": model_id, "revision": revision,
+                           "resolution": resolution, "prompt_language": language,
+                           "prompt": PROMPTS[language], "model_id": model_id, "revision": revision,
                            "raw_answer": raw, **score_answer(raw, doc["true_total"]), **metrics}
                     f.write(json.dumps(row, ensure_ascii=False)+"\n"); f.flush()
-                    print(resolution, doc["doc_id"], row["error_type"], flush=True)
+                    print(resolution, language, doc["doc_id"], row["error_type"], flush=True)
         finally:
             del model, processor, infer
             gc.collect(); torch.cuda.empty_cache()
     rows = read_jsonl(rows_path)
-    if len(rows) != 2*len(docs):
+    if len(rows) != len(MODELS)*len(PROMPTS)*len(docs):
         raise ValueError("Incomplete run; keep partial records, do not report headline results.")
-    print("Complete:", len(docs), "documents × 2 models. Run analysis next.")
+    print("Complete:", len(docs), "documents × 2 models × 2 question languages. Run analysis next.")
 
 
 def main():

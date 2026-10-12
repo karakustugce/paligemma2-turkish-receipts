@@ -53,6 +53,23 @@ class ScientificChecks(unittest.TestCase):
         result = paired_stats(paired_rows([(True, True)]*30), bootstrap_samples=1000)
         self.assertEqual(result["mcnemar_exact_p"], 1.0)
 
+    def test_question_languages_are_paired_within_the_same_model(self):
+        rows = []
+        for i in range(30):
+            for language in ["en", "tr"]:
+                rows.append({"doc_id": str(i), "resolution": 224,
+                             "prompt_language": language, "correct": i < (20 if language == "en" else 25),
+                             "sha256": str(i), "true_total": "100.00"})
+        result = paired_stats(rows, condition_key="prompt_language", condition_values=("en", "tr"))
+        self.assertEqual(result["only_tr_correct"], 5)
+        self.assertAlmostEqual(result["accuracy_difference_tr_minus_en"], 5/30)
+
+    def test_a_language_pair_cannot_hide_missing_documents(self):
+        rows = [{"doc_id": "one", "prompt_language": "en", "correct": True,
+                 "sha256": "one", "true_total": "100.00"}]
+        with self.assertRaises(ValueError):
+            paired_stats(rows, condition_key="prompt_language", condition_values=("en", "tr"))
+
     def test_duplicate_images_and_path_escape_are_rejected(self):
         with tempfile.TemporaryDirectory() as d:
             root = Path(d); images = root / "images"; images.mkdir()
@@ -61,6 +78,10 @@ class ScientificChecks(unittest.TestCase):
             lines = ["doc_id,image_path,true_total"] + [f"doc_{i},{i}.jpg,100.00" for i in range(30)]
             manifest.write_text("\n".join(lines))
             self.assertEqual(len(load_manifest(manifest, images)), 30)
+            draft_lines = ["doc_id,image_path,true_total,annotation_status"] + [f"doc_{i},{i}.jpg,100.00,draft_assistant_visual_review" for i in range(30)]
+            manifest.write_text("\n".join(draft_lines))
+            with self.assertRaises(ValueError): load_manifest(manifest, images)
+            manifest.write_text("\n".join(lines))
             (images / "1.jpg").write_bytes((images / "0.jpg").read_bytes())
             with self.assertRaises(ValueError): load_manifest(manifest, images)
             lines[1] = "doc_0,../outside.jpg,100.00"
