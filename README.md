@@ -12,7 +12,7 @@ Bunu ölçmek için aynı fişleri iki modele ve iki dilde okutuyorum. Her fiş 
 | `mix-224`      | 224-en         | 224-tr      |
 | `mix-448`      | 448-en         | 448-tr      |
 
-**Durum:** Kod hazır, gerçek fişlerle koşu henüz yapılmadı. Sonuçlar gelince bu satırı güncelleyeceğim.
+**Durum:** 49 gerçek fiş seçildi; referans toplamları insan kontrolü bekliyor. Kod hazır, gerçek model koşusu henüz yapılmadı.
 
 ## Ne ölçüyorum
 
@@ -45,7 +45,7 @@ python -m pg2receipts.analyze --run results/run01
 
 Koşu yarıda kesilirse aynı komuta `--resume` ekleyince kaldığı yerden devam ediyor. Soru, veri ya da kod değişirse yeni bir çıktı klasörü gerekiyor.
 
-Veriyi hazırlamak için `data/manifest_template.csv` dosyasını `data/manifest.csv` olarak kopyala ve doldur. Manifest'te `annotation_status` sütunu varsa her satırı `human_verified` yapmadan koşu başlamıyor. Ayrıntılar [veri ve deney rehberinde](docs/VERI_VE_DENEY.md).
+Veriyi hazırlamak için `data/manifest_template.csv` dosyasını `data/manifest.csv` olarak kopyala ve doldur. Manifest'te `annotation_status` sütunu varsa her satırı `human_verified` yapmadan koşu başlamıyor. Ayrıntılar [veri ve deney rehberinde](docs/VERI_VE_DENEY.md). Hazırlanan 49 fişin [kaynak notları](docs/KAYNAK_VERI.md) da burada; referans CSV’si özel tutuluyor.
 
 ## Çıktılar
 
