@@ -1,5 +1,5 @@
-# Experiment status
+# Durum
 
-Implementation prepared and software checks completed. No real receipt evaluation has been run yet. No model accuracy, latency or human-time results are claimed here.
+Kod hazır, gerçek fiş koşusu henüz yapılmadı. Bu klasörde henüz sonuç yok.
 
-Real execution requires 30–50 labeled receipt images, accepted access to both Google model checkpoints and a CUDA GPU. Generated files in this directory are ignored by git; select and inspect the aggregate report/figures before publication.
+Koşu için 30–50 etiketli fiş, iki model sayfasında kabul edilmiş Google erişimi ve bir CUDA GPU gerekiyor. Üretilen dosyalar git'e girmez; yayımlamadan önce toplu raporu ve grafikleri kontrol edip ekliyorum.
