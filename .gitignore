@@ -1,0 +1,10 @@
+__pycache__/
+*.py[cod]
+.venv/
+.env
+data/images/
+data/manifest.csv
+results/*
+!results/STATUS.md
+.ipynb_checkpoints/
+*.zip
