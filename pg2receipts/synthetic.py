@@ -185,9 +185,6 @@ def _render(entries, width: int, rng: random.Random, degraded: bool) -> Image.Im
         image = image.filter(ImageFilter.GaussianBlur(rng.uniform(0.25, 0.65)))
     angle = rng.uniform(-1.8, 1.8) if degraded else rng.uniform(-0.25, 0.25)
     image = image.rotate(angle, resample=Image.Resampling.BICUBIC, expand=True, fillcolor=paper)
-    if degraded:
-        noise = Image.effect_noise(image.size, 7).convert("RGB")
-        image = Image.blend(image, noise, 0.025)
     return image
 
 
