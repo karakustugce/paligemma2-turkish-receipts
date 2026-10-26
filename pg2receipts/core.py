@@ -51,8 +51,14 @@ def load_manifest(path, image_root):
         raise ValueError("The frozen evaluation set must contain 30–50 documents.")
     ids, hashes, docs = set(), set(), []
     for row in source:
-        if row.get("annotation_status") and row["annotation_status"] != "human_verified":
-            raise ValueError("Draft reference amounts need human verification before scoring")
+        dataset_type = (row.get("dataset_type") or "real").strip().lower()
+        annotation_status = (row.get("annotation_status") or "").strip().lower()
+        if dataset_type not in {"real", "synthetic"}:
+            raise ValueError(f"Unsupported dataset_type for {row.get('doc_id')}: {dataset_type}")
+        if dataset_type == "real" and annotation_status not in {"", "human_verified"}:
+            raise ValueError("Real receipt totals need human verification before scoring")
+        if dataset_type == "synthetic" and annotation_status != "synthetic_ground_truth":
+            raise ValueError("Synthetic receipts require generator-produced ground truth labels")
         doc_id = row["doc_id"].strip()
         if not re.fullmatch(r"[A-Za-z0-9_-]+", doc_id) or doc_id in ids:
             raise ValueError(f"Invalid or repeated doc_id: {doc_id}")
@@ -70,7 +76,7 @@ def load_manifest(path, image_root):
         ids.add(doc_id); hashes.add(digest)
         docs.append({
             "doc_id": doc_id, "image": str(image), "sha256": digest,
-            "true_total": str(total),
+            "true_total": str(total), "dataset_type": dataset_type,
             "capture_quality": row.get("capture_quality", "unspecified") or "unspecified",
             "length_group": row.get("length_group", "unspecified") or "unspecified",
             "merchant_group": row.get("merchant_group", "unspecified") or "unspecified",
