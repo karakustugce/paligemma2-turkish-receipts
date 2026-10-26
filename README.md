@@ -2,68 +2,71 @@
 
 Freya Research Fellows programında PaliGemma 2 makalesini okurken iki şeyi merak ettim:
 
-1. Daha yüksek çözünürlüklü model (448px) Türk fişlerinde toplam tutarı gerçekten daha iyi okuyor mu, yoksa sadece daha fazla GPU mu harcıyor?
-2. Soruyu Türkçe sorunca ne değişiyor?
+1. mix-448, Türkçe fiş toplamlarını mix-224'ten daha doğru okuyor mu?
+2. Aynı isteği Türkçe sormak ile İngilizce sormak arasında fark var mı?
 
-Bunu ölçmek için aynı fişleri iki modele ve iki dilde okutuyorum. Her fiş dört kez okunuyor:
+Her belge dört koşulda okunur: iki model × iki soru dili.
 
 |                | İngilizce soru | Türkçe soru |
 | -------------- | -------------- | ----------- |
 | `mix-224`      | 224-en         | 224-tr      |
 | `mix-448`      | 448-en         | 448-tr      |
 
-**Durum:** 49 gerçek fiş seçildi; referans toplamları insan kontrolü bekliyor. Kod hazır, gerçek model koşusu henüz yapılmadı.
+## Durum
 
-## Ne ölçüyorum
+**Model koşusu henüz yapılmadı; gerçek sonuç veya GPU süresi yok.** İki ayrı veri yolu hazır:
 
-- **Görev:** Fişteki nihai ödenecek toplamı bulmak. Fatura ve irsaliye bu ilk denemede yok.
-- **Veri:** 30–50 farklı gerçek fiş, hedef 50. Doğru tutarları modeli çalıştırmadan önce elle girip donduruyorum.
-- **Ana ölçüt:** Tutar kuruşuna kadar doğru mu? Açıklama ekleyen, birden fazla sayı veren veya okunamayan cevaplar yanlış sayılıyor.
-- **Ek ölçümler:** Yanlış sayı mı, biçim hatası mı; üretim süresi; GPU belleği.
-- **İstatistik:** Aynı fişler her koşulda okunduğu için karşılaştırmalar eşleştirilmiş: Wilson aralıkları, eşleştirilmiş bootstrap ve exact McNemar testi.
-- **Ana karşılaştırma:** Türkçe soruda 448 − 224. Diğer üç karşılaştırma (İngilizce soruda 448 − 224, her modelde Türkçe − İngilizce) keşifsel.
+- **Sentetik pilot:** Üretici 30–50 Türkçe fiş görselini ve hesaplanan doğru toplamları oluşturur. Varsayılan 50 fiş; sonuçlar gerçek fiş başarımı olarak yorumlanamaz.
+- **Gerçek fiş deneyi:** Kaynak kontrolünden geçmiş 49 gerçek görüntü var. Referans toplamları insan doğrulaması bekliyor.
 
-Sorular `pg2receipts/__init__.py` içinde sabit. Test fişlerinin cevaplarını gördükten sonra soruyu değiştirmiyorum.
+## Ölçüm
 
-## Çalıştırma
+- **Görev:** Fişte ödenecek nihai toplamı bulmak. Fatura ve irsaliye kapsam dışı.
+- **Ana ölçüt:** Tutar kuruşuna kadar doğru mu? Açıklamalı, birden fazla tutar içeren veya okunamayan cevaplar başarısız sayılır.
+- **Ek ölçümler:** Yanlış sayı mı, biçim hatası mı; GPU üretim süresi ve tahsisli bellek.
+- **İstatistik:** Aynı fişler her koşulda kullanılır: Wilson aralıkları, eşleştirilmiş bootstrap ve exact McNemar testi.
+- **Ana karşılaştırma:** Türkçe soruda mix-448 eksi mix-224. Diğer üç karşılaştırma keşifseldir.
 
-En kolayı Colab, T4 GPU yeterli:
+Sorular `pg2receipts/__init__.py` içinde sabit. Test cevapları görüldükten sonra soru değiştirilmemelidir.
 
-[Colab'da aç](https://colab.research.google.com/github/karakustugce/paligemma2-turkish-receipts/blob/main/notebooks/colab_evaluation.ipynb)
+## Colab’da çalıştırma
 
-İki model sayfasında Google'ın erişim koşullarını kabul etmek gerekiyor: [mix-224](https://huggingface.co/google/paligemma2-3b-mix-224), [mix-448](https://huggingface.co/google/paligemma2-3b-mix-448).
+[Colab’da aç](https://colab.research.google.com/github/karakustugce/paligemma2-turkish-receipts/blob/main/notebooks/colab_evaluation.ipynb)
 
-Kendi CUDA GPU'nda:
+Önce **Çalışma zamanı → Çalışma zamanı türünü değiştir → T4 GPU** seçin. [mix-224](https://huggingface.co/google/paligemma2-3b-mix-224) ve [mix-448](https://huggingface.co/google/paligemma2-3b-mix-448) sayfalarında Google erişim koşullarını kabul edin. Defter varsayılan olarak sentetik pilotu üretir; gerçek fiş yoluna geçmek için veri modu hücresindeki seçimi değiştirin. Hugging Face token’ını deftere yazmayın veya paylaşmayın.
 
-```
+Sentetik pilotu kendi bilgisayarınızda hazırlamak için:
+
+```bash
 python -m pip install -r requirements.txt
-hf auth login
-python -m unittest discover -s tests -v
-python -m pg2receipts.run --manifest data/manifest.csv --images data/images --out results/run01
-python -m pg2receipts.analyze --run results/run01
+python -m pg2receipts.synthetic --out data/synthetic_pilot --count 50 --seed 2026
+python -m pg2receipts.run --manifest data/synthetic_pilot/manifest.csv --images data/synthetic_pilot/images --out results/synthetic_run
+python -m pg2receipts.analyze --run results/synthetic_run
 ```
 
-Koşu yarıda kesilirse aynı komuta `--resume` ekleyince kaldığı yerden devam ediyor. Soru, veri ya da kod değişirse yeni bir çıktı klasörü gerekiyor.
+Gerçek fişler için `data/manifest_template.csv` dosyasını `data/manifest.csv` olarak kopyalayıp doldurun, görüntüleri `data/images/` içine koyun ve her gerçek toplamı model koşusundan önce insan gözüyle doğrulayın. Ayrıntılar [veri ve deney rehberinde](docs/VERI_VE_DENEY.md); sentetik veri tasarımı [sentetik veri notunda](docs/SENTETIK_VERI.md), gerçek kaynak örneklem ise [kaynak notunda](docs/KAYNAK_VERI.md).
 
-Veriyi hazırlamak için `data/manifest_template.csv` dosyasını `data/manifest.csv` olarak kopyala ve doldur. Manifest'te `annotation_status` sütunu varsa her satırı `human_verified` yapmadan koşu başlamıyor. Ayrıntılar [veri ve deney rehberinde](docs/VERI_VE_DENEY.md). Hazırlanan 49 fişin [kaynak notları](docs/KAYNAK_VERI.md) da burada; referans CSV’si özel tutuluyor.
+Kendi CUDA GPU’nuzda model erişimini kabul ettikten sonra `hf auth login` ile giriş yapın. Koşu yarıda kesilirse aynı veri ve ortamla `--resume` ekleyin. Soru, etiket, görüntü veya yazılım sürümü değişirse yeni bir çıktı klasörü kullanın.
 
 ## Çıktılar
 
-Koşudan sonra `results/run01/` içinde:
+Koşu ve analizden sonra:
 
-- `report.md`: dört koşulun tablosu ve eşleştirilmiş karşılaştırmalar
-- `summary.json`: bütün sayılar ve güven aralıkları
-- `accuracy_and_resources.png`: doğruluk, süre ve bellek grafiği
-- `predictions.jsonl`: modelin ham cevapları
-- `run_config.json`: model sürümleri, sorular, görüntü hash'leri
+- `report.md`: dört koşulun doğruluk tablosu ve eşleştirilmiş karşılaştırmalar
+- `summary.json`: sonuçlar, güven aralıkları ve veri türü
+- `accuracy_and_resources.png`: doğruluk, GPU süresi ve bellek grafiği
+- `predictions.jsonl`: modelin ham yanıtları ve skorlar
+- `run_config.json`: checkpoint sürümleri, sorular, görüntü hash’leri ve veri kökeni
+
+Sentetik veri analizinde ekonomik senaryo grafiği özellikle üretilmez. Modelin sentetik görsellerdeki hatası, gerçek iş akışındaki düzeltme süresini veya tasarrufu göstermez.
 
 ## Sınırlar
 
-- 50 fiş küçük bir örneklem. Sonuçlar bütün Türkçe belgeler için geçerli sayılmaz.
-- `mix-224` ve `mix-448` farklı eğitilmiş checkpoint'ler. Aradaki fark yalnızca çözünürlükten gelmiyor olabilir.
-- Türkçe soru birebir çeviri değil. Dil karşılaştırması "aynı şeyi Türkçe istemek" etkisini ölçüyor.
-- Ekonomi grafiğindeki insan süreleri varsayım, ölçüm değil.
-- Fiş görüntüleri gizlilik nedeniyle repoda yok. Sadece kod ve toplu sonuçlar paylaşılıyor.
+- Sentetik örnekler programatik olarak çizilir; gerçek fotoğraf, gerçek işletme veya gerçek işlem kaydı değildir. Bunlardaki skorlar gerçek fiş performansını göstermez.
+- 49 gerçek fişli yol da küçük ve tek kaynaklı bir örneklemdir; tüm Türkçe belgeleri temsil etmez.
+- `mix-224` ve `mix-448` farklı eğitilmiş checkpoint’lerdir. Fark yalnız çözünürlükten kaynaklanmayabilir.
+- Türkçe ve İngilizce soruların görev önekleri de farklıdır; fark yalnız çeviri etkisi olarak yorumlanamaz.
+- Gerçek iş gücü süreleri ölçülmediği sürece ekonomik tasarruf iddiası kurulmaz.
 
 ## Kaynaklar
 
