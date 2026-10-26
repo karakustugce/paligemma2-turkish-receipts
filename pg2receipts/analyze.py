@@ -181,10 +181,14 @@ Bu küçük örneklem bütün Türkçe belgeleri temsil etmez. Aynı işletme ş
 
 Dil koşulu soru metnini ve `answer en/tr` görev önekini birlikte değiştirir. Fark yalnızca çevirinin etkisi diye yorumlanamaz. Mix kontrol noktaları da eğitim açısından farklıdır; bu deney çözünürlüğün tek başına nedensel etkisini ayırmaz.
 
-GPU üretim süresi insan emeği değildir. Ekonomik grafikteki insan süreleri varsayımsaldır; gerçekleşmiş işçilik tasarrufu veya parasal yatırım getirisi ölçülmedi.
+GPU üretim süresi insan emeği değildir; gerçek işçilik tasarrufu veya parasal yatırım getirisi ölçülmedi.
 
 Ham cevaplar ve referans tutarlar `predictions.jsonl` içinde, tüm koşu ayarları `run_config.json` içinde saklanır. `methodology.json` kişisel belge kayıtlarını içermeyen yöntem özetidir. Yayından önce ham cevapları ve referans tutarları gözden geçirin.
 """
+    if is_synthetic:
+        report += "\nSentetik görseller, kurgusal mağaza şablonları ve programatik referans toplamları kullanıldı. Bu pilotun doğruluğu gerçek fişlerin, telefon fotoğraflarının veya gerçek iş akışlarının başarımına genellenemez. Ekonomik projeksiyon özellikle üretilmedi.\n"
+    else:
+        report += "\nEkonomik senaryodaki insan süreleri varsayımdır; ölçülmüş işçilik tasarrufu değildir.\n"
     (out / "report.md").write_text(report, encoding="utf-8")
     print("Saved four-condition analysis to", out)
     return result
