@@ -4,6 +4,12 @@
 
 İlk çalışma yalnız **Türkçe fişten nihai toplam tutarı çıkarma** üzerine kuruludur. Fatura ve irsaliye ayrı bir sonraki deney olabilir. Böylece görev farklılığı, iki modelin karşılaştırmasını karıştırmaz.
 
+### Ayrı sentetik pilot yolu
+
+Kişisel fiş bulunmadığında, sentetik pilotu `python -m pg2receipts.synthetic --out data/synthetic_pilot --count 50 --seed 2026` ile oluşturun. Üretici PNG görsellerini, doğru toplamları ve `dataset_info.json` dosyasını yazar. 50 örnekte 10 kurgusal mağaza şablonu kullanılır; 25 kısa ve 25 uzun belge ile 30 temiz ve 20 kontrollü sentetik bozulma dengelenir. Sentetik kalite etiketleri gerçek kamera çekimi anlamına gelmez.
+
+Üretici görseli ve `true_total` değerini aynı işlem kaydından oluşturduğu için `dataset_type=synthetic` ve `annotation_status=synthetic_ground_truth` yazar. Bu etiket gerçek fiş için insan doğrulamasının yerine geçmez. Gerçek ve sentetik verileri aynı koşuda karıştırmayın. Analiz sentetik veri kökenini raporlar ve ekonomik senaryo grafiğini üretmez. Sentetik skorlardan gerçek fiş performansı, insan iş yükü veya tasarruf sonucu çıkarılamaz. Ayrıntılar [sentetik veri notunda](SENTETIK_VERI.md).
+
 Hedef 50 fiş, asgari 30. Aynı belgenin ikinci fotoğrafı yeni bir örnek değildir. Mümkünse 8–10 farklı işletme/şablondan toplayın ve bir işletmenin veri setini baskın biçimde doldurmasını önleyin. Önerilen hedef: 25 kısa, 25 uzun; toplamda yaklaşık 30 net, 20 doğal çekim zorluğu olan görüntü. Bunlar toplama hedefleridir; daha farklı dağılım olursa gerçek sayıları raporlayın. Aynı fotoğrafın yapay biçimde bulanıklaştırılmış kopyasını bağımsız test örneği saymayın.
 
 Kısa/uzun ve net/zor etiketlerini model cevaplarını görmeden belirleyin; tanımınızı kaydedin. Örneğin kısa/uzun ayrımını görünür ürün satırı sayısıyla (en fazla 5 / 6 ve üzeri) yapabilirsiniz. Net/zor sınıflamasında soluk baskı, yansıma, perspektif veya doğal bulanıklık bulunmasını kaydedin. Alt grup sonuçları keşifseldir.
