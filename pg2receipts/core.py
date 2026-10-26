@@ -50,11 +50,15 @@ def load_manifest(path, image_root):
     if not 30 <= len(source) <= 50:
         raise ValueError("The frozen evaluation set must contain 30–50 documents.")
     ids, hashes, docs = set(), set(), []
+    dataset_types = set()
     for row in source:
         dataset_type = (row.get("dataset_type") or "real").strip().lower()
         annotation_status = (row.get("annotation_status") or "").strip().lower()
         if dataset_type not in {"real", "synthetic"}:
             raise ValueError(f"Unsupported dataset_type for {row.get('doc_id')}: {dataset_type}")
+        dataset_types.add(dataset_type)
+        if len(dataset_types) > 1:
+            raise ValueError("Real and synthetic documents cannot be mixed in one run")
         if dataset_type == "real" and annotation_status not in {"", "human_verified"}:
             raise ValueError("Real receipt totals need human verification before scoring")
         if dataset_type == "synthetic" and annotation_status != "synthetic_ground_truth":
