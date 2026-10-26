@@ -1,9 +1,13 @@
 # Durum
 
-Kod hazır, gerçek fiş koşusu henüz yapılmadı. Bu klasörde henüz sonuç yok.
+Model koşusu henüz yapılmadı. Bu depoda henüz model skoru veya GPU süresi yok.
 
-Koşu için 30–50 etiketli fiş, iki model sayfasında kabul edilmiş Google erişimi ve bir CUDA GPU gerekiyor. Üretilen dosyalar git'e girmez; yayımlamadan önce toplu raporu ve grafikleri kontrol edip ekliyorum.
+## Sentetik pilot
 
-## Veri hazırlığı
+Üretici 30–50 programatik fiş görselini ve aynı işlem kaydından hesaplanan doğru toplamları oluşturur. Colab defteri varsayılan olarak 50 örnekli sentetik pilotu seçer. Sonuçlar gerçek fiş performansı veya ekonomik kazanç olarak yorumlanamaz.
 
-60 aday kaynak görüntüsü indirildi, kapsam ve tekrar kontrolünden sonra 49 fiş seçildi. Referans toplamları asistanın görsel transkripsiyonudur; insan doğrulaması bekliyor. Google girişi tamamlanmadığı için Colab T4 koşusu başlatılamadı. Gerçek model skoru veya GPU süresi henüz yok.
+## Gerçek fiş deneyi
+
+60 aday kaynak görüntüsü incelendi; kapsam ve tekrar kontrolünden sonra 49 fiş kaldı. Referans toplamları insan doğrulaması bekliyor. Kaynak dosyaları ve notlar [docs/KAYNAK_VERI.md](../docs/KAYNAK_VERI.md) içinde anlatılıyor. Gerçek koşuya geçmeden önce her toplamı görüntüden doğrulayın.
+
+Sonuç dosyaları varsayılan olarak Git'e girmez. Paylaşmadan önce raporu, referansları ve ham yanıtları inceleyin.
