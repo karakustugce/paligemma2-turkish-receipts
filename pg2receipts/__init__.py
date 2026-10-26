@@ -8,4 +8,4 @@ PROMPTS = {
     "en": "answer en What is the final total amount to pay on this receipt? Give only the numeric amount with two decimal digits.",
     "tr": "answer tr Bu fişte ödenecek nihai toplam tutar nedir? Yalnızca iki ondalık basamaklı sayısal tutarı yaz.",
 }
-__version__ = "0.2.0"
+__version__ = "0.3.0"
