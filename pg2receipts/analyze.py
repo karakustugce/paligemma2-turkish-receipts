@@ -19,6 +19,11 @@ def analyze(directory):
     cfg = json.loads((out / "run_config.json").read_text())
     rows = read_jsonl(out / "predictions.jsonl")
     declared = {d["doc_id"]: d for d in cfg["documents"]}
+    dataset_types = {d.get("dataset_type", "real") for d in cfg["documents"]}
+    if len(dataset_types) != 1 or not dataset_types.issubset({"real", "synthetic"}):
+        raise ValueError("A run must contain exactly one supported dataset type")
+    dataset_type = next(iter(dataset_types))
+    is_synthetic = dataset_type == "synthetic"
     if not 30 <= len(declared) <= 50 or len(rows) != 4*len(declared):
         raise ValueError("Complete 30–50-document, four-condition run required")
     if cfg.get("prompts") != PROMPTS:
@@ -59,11 +64,26 @@ def analyze(directory):
                               "median_preprocess_seconds": statistics.median(x["preprocess_seconds"] for x in group),
                               "max_gpu_allocated_gb": max(x["peak_gpu_allocated_gb"] for x in group)})
     n = len(declared)
-    result = {"conditions": summaries, "paired": paired, "primary_comparison": "resolution_tr",
-              "scope": "Small Turkish receipt sample; comparison of checkpoints and language prompt conditions.",
-              "human_time_status": "Not measured; economic figure uses assumed human times."}
+    result = {
+        "dataset_type": dataset_type,
+        "conditions": summaries,
+        "paired": paired,
+        "primary_comparison": "resolution_tr",
+        "scope": (
+            "Programmatically rendered synthetic Turkish-style receipts; results do not estimate performance on real receipts."
+            if is_synthetic else
+            "Small Turkish receipt sample; comparison of checkpoints and language prompt conditions."
+        ),
+        "human_time_status": "Not measured; model latency is not human labor.",
+        "economic_analysis_status": (
+            "Omitted for synthetic data; synthetic accuracy must not be translated into real-world labor savings."
+            if is_synthetic else
+            "Not measured; any economic scenario uses assumed human times."
+        ),
+    }
     (out / "summary.json").write_text(json.dumps(result, ensure_ascii=False, indent=2), encoding="utf-8")
     methodology = {k: v for k, v in cfg.items() if k != "documents"}
+    methodology["dataset_type"] = dataset_type
     methodology["n_documents"] = n
     (out / "methodology.json").write_text(json.dumps(methodology, ensure_ascii=False, indent=2), encoding="utf-8")
     with (out / "summary.csv").open("w", encoding="utf-8", newline="") as f:
@@ -100,31 +120,54 @@ def analyze(directory):
     axes[0].set(title="Toplam tutar doğruluğu", ylabel="Doğru cevap (%)", ylim=(0, 118))
     axes[1].set(title="Medyan GPU üretim süresi", ylabel="Saniye / belge")
     axes[2].set(title="En yüksek GPU tahsisli bellek", ylabel="GB")
-    fig.suptitle(f"Aynı {n} Türkçe fişte çözünürlük × soru dili", fontsize=13)
-    fig.text(.02, .01, "EN: İngilizce soru; TR: Türkçe soru (taralı sütun). Doğruluk: Wilson %95 aralığı.\nSüre: ısınma sonrası tek üretim; indirme, yükleme ve insan emeği dahil değil. Bellek: PyTorch tahsisli bellek.", fontsize=9)
+    fig.suptitle(
+        f"Sentetik Türkçe fiş pilotu: {n} örnek" if is_synthetic
+        else f"Aynı {n} Türkçe fişte çözünürlük × soru dili",
+        fontsize=13,
+    )
+    chart_note = (
+        "Sentetik görseller ve programatik etiketler; gerçek fişlere genellenemez.\n"
+        if is_synthetic else ""
+    )
+    chart_note += "EN: İngilizce soru; TR: Türkçe soru (taralı sütun). Doğruluk: Wilson %95 aralığı.\nSüre: ısınma sonrası tek üretim; indirme, yükleme ve insan emeği dahil değil. Bellek: PyTorch tahsisli bellek."
+    fig.text(.02, .01, chart_note, fontsize=9)
     fig.tight_layout(rect=(0, .1, 1, .93))
     fig.savefig(out / "accuracy_and_resources.png", dpi=300)
     fig.savefig(out / "accuracy_and_resources.pdf"); plt.close(fig)
 
-    fig, ax = plt.subplots(figsize=(9, 4.8))
-    p = np.linspace(0, 1, 201)
-    hours = lambda q: 1000*(4-1-1-5*q)/60
-    ax.plot(p*100, hours(p), color="#68737B", label="Varsayımsal saat eğrisi")
-    ax.axhline(0, color="#68737B", lw=.7); ax.axvline(40, color="#68737B", ls="--", lw=.8)
-    for i, s in enumerate(summaries):
-        q = 1-s["accuracy"]
-        ax.errorbar(100*q, hours(q), xerr=[[100*(s["accuracy_wilson95_high"]-s["accuracy"])], [100*(s["accuracy"]-s["accuracy_wilson95_low"])]],
-                    color=colors[i], marker="s" if s["prompt_language"] == "tr" else "o", markersize=8, capsize=4,
-                    label=f'{s["resolution"]} / {s["prompt_language"].upper()}: {s["n"]-s["correct"]}/{s["n"]} başarısız')
-    ax.set(xlim=(-2, 102), xlabel="Ölçülen hata payı (%) - düzeltme payının vekili varsayılıyor",
-           ylabel="Varsayımsal kazanılan saat / hafta", title="Hata payı ölçülür; insan süreleri varsayılır")
-    ax.legend(loc="lower left"); ax.grid(axis="y", alpha=.15)
-    fig.text(.02, .01, "N=1.000; dakika: mevcut=4, hazırlama=1, kontrol=1, ek düzeltme=5.\nGerçekleşmiş işçilik tasarrufu veya parasal yatırım getirisi değildir.", fontsize=9)
-    fig.tight_layout(rect=(0, .1, 1, 1))
-    fig.savefig(out / "economic_scenario.png", dpi=300)
-    fig.savefig(out / "economic_scenario.pdf"); plt.close(fig)
+    if is_synthetic:
+        (out / "economic_scenario_skipped.txt").write_text(
+            "Omitted: synthetic model accuracy does not estimate real-world labor savings.\n",
+            encoding="utf-8",
+        )
+    else:
+        fig, ax = plt.subplots(figsize=(9, 4.8))
+        p = np.linspace(0, 1, 201)
+        hours = lambda q: 1000*(4-1-1-5*q)/60
+        ax.plot(p*100, hours(p), color="#68737B", label="Varsayımsal saat eğrisi")
+        ax.axhline(0, color="#68737B", lw=.7); ax.axvline(40, color="#68737B", ls="--", lw=.8)
+        for i, s in enumerate(summaries):
+            q = 1-s["accuracy"]
+            ax.errorbar(100*q, hours(q), xerr=[[100*(s["accuracy_wilson95_high"]-s["accuracy"])], [100*(s["accuracy"]-s["accuracy_wilson95_low"])]],
+                        color=colors[i], marker="s" if s["prompt_language"] == "tr" else "o", markersize=8, capsize=4,
+                        label=f'{s["resolution"]} / {s["prompt_language"].upper()}: {s["n"]-s["correct"]}/{s["n"]} başarısız')
+        ax.set(xlim=(-2, 102), xlabel="Ölçülen hata payı (%) - düzeltme payının vekili varsayılıyor",
+               ylabel="Varsayımsal kazanılan saat / hafta", title="Hata payı ölçülür; insan süreleri varsayılır")
+        ax.legend(loc="lower left"); ax.grid(axis="y", alpha=.15)
+        fig.text(.02, .01, "N=1.000; dakika: mevcut=4, hazırlama=1, kontrol=1, ek düzeltme=5.\nGerçekleşmiş işçilik tasarrufu veya parasal yatırım getirisi değildir.", fontsize=9)
+        fig.tight_layout(rect=(0, .1, 1, 1))
+        fig.savefig(out / "economic_scenario.png", dpi=300)
+        fig.savefig(out / "economic_scenario.pdf"); plt.close(fig)
 
-    report = f"# Türkçe fiş değerlendirmesi\n\nAynı {n} farklı fiş, dört koşulda değerlendirildi.\n\n"
+    if is_synthetic:
+        report = (
+            f"# Sentetik Türkçe fiş pilotu\n\n"
+            f"{n} programatik olarak oluşturulmuş fiş, dört koşulda değerlendirildi.\n\n"
+            "**Yorum sınırı:** Görseller ve etiketler sentetiktir. Bu sonuçlar gerçek fişlerdeki doğruluğu veya "
+            "gerçek iş gücü tasarrufunu ölçmez.\n\n"
+        )
+    else:
+        report = f"# Türkçe fiş değerlendirmesi\n\nAynı {n} farklı fiş, dört koşulda değerlendirildi.\n\n"
     report += "| Model | Soru | Doğru toplam | Doğruluk | Biçim/okunamama hatası | Medyan üretim (sn) |\n|---|---|---:|---:|---:|---:|\n"
     for s in summaries:
         report += f'| {s["resolution"]} | {s["prompt_language"].upper()} | {s["correct"]}/{s["n"]} | %{100*s["accuracy"]:.1f} | {s["format_or_unreadable"]} | {s["median_generation_seconds"]:.3f} |\n'
