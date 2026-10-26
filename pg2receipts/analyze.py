@@ -136,6 +136,10 @@ def analyze(directory):
     fig.savefig(out / "accuracy_and_resources.pdf"); plt.close(fig)
 
     if is_synthetic:
+        for suffix in ("png", "pdf"):
+            stale_chart = out / f"economic_scenario.{suffix}"
+            if stale_chart.exists():
+                stale_chart.unlink()
         (out / "economic_scenario_skipped.txt").write_text(
             "Omitted: synthetic model accuracy does not estimate real-world labor savings.\n",
             encoding="utf-8",
