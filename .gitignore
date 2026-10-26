@@ -12,3 +12,4 @@ results/*
 !results/STATUS.md
 .ipynb_checkpoints/
 *.zip
+data/synthetic_pilot/
