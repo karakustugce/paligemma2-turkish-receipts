@@ -10,6 +10,7 @@ data/*private*
 data/provenance.json
 results/*
 !results/STATUS.md
+!results/synthetic_pilot/
 .ipynb_checkpoints/
 *.zip
 data/synthetic_pilot/

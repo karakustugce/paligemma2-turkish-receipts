@@ -1,0 +1,481 @@
+{
+  "manifest_fingerprint": "3d154214ab05bf85b11245456a65cee42d0c0a00c75595433b3053bbac01ee67",
+  "documents": [
+    {
+      "doc_id": "fis_001",
+      "sha256": "1785733276941f9d2c5483544247deddb60d456cc17b1b11a66bd0b07f5d76d0",
+      "true_total": "1567.82",
+      "dataset_type": "synthetic",
+      "capture_quality": "clean_render",
+      "length_group": "long",
+      "merchant_group": "market_01"
+    },
+    {
+      "doc_id": "fis_002",
+      "sha256": "d955fea6d624c502c3f710676db1f7f8d62856b1131d19267c0775121de9e7fd",
+      "true_total": "1219.64",
+      "dataset_type": "synthetic",
+      "capture_quality": "clean_render",
+      "length_group": "short",
+      "merchant_group": "market_02"
+    },
+    {
+      "doc_id": "fis_003",
+      "sha256": "973887746d39f2f23ff49d818ad1721338a2590edaf10ddf2067ceb559d4e99f",
+      "true_total": "1551.13",
+      "dataset_type": "synthetic",
+      "capture_quality": "clean_render",
+      "length_group": "long",
+      "merchant_group": "market_03"
+    },
+    {
+      "doc_id": "fis_004",
+      "sha256": "c2268bad5524b83ad0b115ac4b7573219dfc51e247b0c77cb556bb1c951af44f",
+      "true_total": "471.80",
+      "dataset_type": "synthetic",
+      "capture_quality": "synthetically_degraded",
+      "length_group": "short",
+      "merchant_group": "cafe_04"
+    },
+    {
+      "doc_id": "fis_005",
+      "sha256": "c5f8a506a614f635f256444a0d37680f3d8b6e76b9c5dc1195022141f34f3fe7",
+      "true_total": "310.64",
+      "dataset_type": "synthetic",
+      "capture_quality": "clean_render",
+      "length_group": "short",
+      "merchant_group": "cafe_05"
+    },
+    {
+      "doc_id": "fis_006",
+      "sha256": "c66fa3e20b977725bfc6eef72e179e058641d4a30788ddab2be78a03afb89be4",
+      "true_total": "366.06",
+      "dataset_type": "synthetic",
+      "capture_quality": "clean_render",
+      "length_group": "short",
+      "merchant_group": "cafe_06"
+    },
+    {
+      "doc_id": "fis_007",
+      "sha256": "7bde7c9106bdda0fde2f28b813d33bd0c2e4ed80fe26f1c1f3476f1cbd5f0c4a",
+      "true_total": "1378.86",
+      "dataset_type": "synthetic",
+      "capture_quality": "clean_render",
+      "length_group": "short",
+      "merchant_group": "fuel_07"
+    },
+    {
+      "doc_id": "fis_008",
+      "sha256": "399e6603f1acecc4be6bde2f541bf2e786694f453919e279226827b6bc06af27",
+      "true_total": "3558.81",
+      "dataset_type": "synthetic",
+      "capture_quality": "clean_render",
+      "length_group": "long",
+      "merchant_group": "fuel_08"
+    },
+    {
+      "doc_id": "fis_009",
+      "sha256": "df6ed9adc1158e8ba173ae224fcc782d1bcdc77a43472c1d3e7e76c41684d4c5",
+      "true_total": "682.13",
+      "dataset_type": "synthetic",
+      "capture_quality": "clean_render",
+      "length_group": "long",
+      "merchant_group": "bakery_09"
+    },
+    {
+      "doc_id": "fis_010",
+      "sha256": "fc5d6614b2c91fa02c2bc97b45a5c03f404fcf291b383505f1850626bb9a4c33",
+      "true_total": "162.72",
+      "dataset_type": "synthetic",
+      "capture_quality": "clean_render",
+      "length_group": "short",
+      "merchant_group": "bakery_10"
+    },
+    {
+      "doc_id": "fis_011",
+      "sha256": "78db1e15758e4c038a97c30a5de4b11ef003c8089689ec8cdaf7365508d8e01e",
+      "true_total": "1306.75",
+      "dataset_type": "synthetic",
+      "capture_quality": "synthetically_degraded",
+      "length_group": "long",
+      "merchant_group": "market_01"
+    },
+    {
+      "doc_id": "fis_012",
+      "sha256": "6490b0d0f4e6a16eb34813ad88f925ad2b0ec51d05a5a27e6dfad6ae59d6c29e",
+      "true_total": "734.21",
+      "dataset_type": "synthetic",
+      "capture_quality": "clean_render",
+      "length_group": "short",
+      "merchant_group": "market_02"
+    },
+    {
+      "doc_id": "fis_013",
+      "sha256": "243a7d1acfd3c560ea4f7f85c7c278d8b310684b3d3dc5a1631efa816dfb0737",
+      "true_total": "500.15",
+      "dataset_type": "synthetic",
+      "capture_quality": "clean_render",
+      "length_group": "short",
+      "merchant_group": "market_03"
+    },
+    {
+      "doc_id": "fis_014",
+      "sha256": "4ef4b47353777844235068c2ebc7465eb44e57e71b5e0b56b5b9d92b378b85d0",
+      "true_total": "757.51",
+      "dataset_type": "synthetic",
+      "capture_quality": "synthetically_degraded",
+      "length_group": "long",
+      "merchant_group": "cafe_04"
+    },
+    {
+      "doc_id": "fis_015",
+      "sha256": "2626931761d9cbc71e765a69f797cf3b6f85fad1f6c292fc8588000b3a657b4f",
+      "true_total": "408.37",
+      "dataset_type": "synthetic",
+      "capture_quality": "clean_render",
+      "length_group": "short",
+      "merchant_group": "cafe_05"
+    },
+    {
+      "doc_id": "fis_016",
+      "sha256": "17d2af14b6e71eb6431495853134bdad3f780828e976c698754f3258ead4ee7e",
+      "true_total": "504.71",
+      "dataset_type": "synthetic",
+      "capture_quality": "synthetically_degraded",
+      "length_group": "short",
+      "merchant_group": "cafe_06"
+    },
+    {
+      "doc_id": "fis_017",
+      "sha256": "6ee34acc6be373b9c088c89b6cadd03e47050ee0a8b5ac9a86c0d5ff7b4e04b6",
+      "true_total": "2763.83",
+      "dataset_type": "synthetic",
+      "capture_quality": "synthetically_degraded",
+      "length_group": "long",
+      "merchant_group": "fuel_07"
+    },
+    {
+      "doc_id": "fis_018",
+      "sha256": "4f7c5686162cebe60debd6d1794d117db2f576edb1afb483be6f5dc58fda8987",
+      "true_total": "1810.85",
+      "dataset_type": "synthetic",
+      "capture_quality": "synthetically_degraded",
+      "length_group": "short",
+      "merchant_group": "fuel_08"
+    },
+    {
+      "doc_id": "fis_019",
+      "sha256": "f2f4488d3bc54d3e0b83e0dd2f0acc967b475f5fc9aaaddf46320e44b85ce87b",
+      "true_total": "172.88",
+      "dataset_type": "synthetic",
+      "capture_quality": "clean_render",
+      "length_group": "short",
+      "merchant_group": "bakery_09"
+    },
+    {
+      "doc_id": "fis_020",
+      "sha256": "bb36d34b172708160d98ad2a34b40b0871c5e840385bf83f6602b4481b239c44",
+      "true_total": "107.40",
+      "dataset_type": "synthetic",
+      "capture_quality": "clean_render",
+      "length_group": "short",
+      "merchant_group": "bakery_10"
+    },
+    {
+      "doc_id": "fis_021",
+      "sha256": "b25db004881c6e55775cd070f5ab93c69330cbf624dc8410eb2f3171b6bcb8ad",
+      "true_total": "687.70",
+      "dataset_type": "synthetic",
+      "capture_quality": "clean_render",
+      "length_group": "short",
+      "merchant_group": "market_01"
+    },
+    {
+      "doc_id": "fis_022",
+      "sha256": "36325485d95e71722992763cd510695b64723541fe41846fe2b37b00050113ce",
+      "true_total": "2572.35",
+      "dataset_type": "synthetic",
+      "capture_quality": "clean_render",
+      "length_group": "long",
+      "merchant_group": "market_02"
+    },
+    {
+      "doc_id": "fis_023",
+      "sha256": "87d57114194e774f2e7e09bd3030f302cb5de443b80c2299b602db39b5418af5",
+      "true_total": "1683.56",
+      "dataset_type": "synthetic",
+      "capture_quality": "clean_render",
+      "length_group": "short",
+      "merchant_group": "market_03"
+    },
+    {
+      "doc_id": "fis_024",
+      "sha256": "955d1ad6fde678010c8c37160250b429005e6e4876c957cc52daf3122696b7e8",
+      "true_total": "833.67",
+      "dataset_type": "synthetic",
+      "capture_quality": "synthetically_degraded",
+      "length_group": "long",
+      "merchant_group": "cafe_04"
+    },
+    {
+      "doc_id": "fis_025",
+      "sha256": "9396c03342aa513d140b53d9895974e7f40f0802ab4f02539f07033d75e69db2",
+      "true_total": "774.15",
+      "dataset_type": "synthetic",
+      "capture_quality": "clean_render",
+      "length_group": "long",
+      "merchant_group": "cafe_05"
+    },
+    {
+      "doc_id": "fis_026",
+      "sha256": "824f02107460ab96b05677d18b996e0557e202b50c6ec520c2e208fafa252228",
+      "true_total": "631.70",
+      "dataset_type": "synthetic",
+      "capture_quality": "synthetically_degraded",
+      "length_group": "short",
+      "merchant_group": "cafe_06"
+    },
+    {
+      "doc_id": "fis_027",
+      "sha256": "2328bffb43e877a27fcd6111263191df34008d1942cca9b2f91b449a6dacc1a6",
+      "true_total": "3716.85",
+      "dataset_type": "synthetic",
+      "capture_quality": "synthetically_degraded",
+      "length_group": "long",
+      "merchant_group": "fuel_07"
+    },
+    {
+      "doc_id": "fis_028",
+      "sha256": "67dfd9529d22d90013388b6df7142101043933dac63446442183287014156d94",
+      "true_total": "4636.30",
+      "dataset_type": "synthetic",
+      "capture_quality": "clean_render",
+      "length_group": "long",
+      "merchant_group": "fuel_08"
+    },
+    {
+      "doc_id": "fis_029",
+      "sha256": "3c388ca3ffd2f602f31c64e43cb02524c33390679f45863feee40165c5a16ead",
+      "true_total": "209.06",
+      "dataset_type": "synthetic",
+      "capture_quality": "clean_render",
+      "length_group": "short",
+      "merchant_group": "bakery_09"
+    },
+    {
+      "doc_id": "fis_030",
+      "sha256": "736115eb262342e1b1c03b260de9b62e3adcda92dab3300c7eb965ace4df59be",
+      "true_total": "406.30",
+      "dataset_type": "synthetic",
+      "capture_quality": "synthetically_degraded",
+      "length_group": "long",
+      "merchant_group": "bakery_10"
+    },
+    {
+      "doc_id": "fis_031",
+      "sha256": "be1bb757b9fe8c6295e0f7a4dc7a466585ce3f777444b5ce5d8aeb8f471554be",
+      "true_total": "832.18",
+      "dataset_type": "synthetic",
+      "capture_quality": "clean_render",
+      "length_group": "short",
+      "merchant_group": "market_01"
+    },
+    {
+      "doc_id": "fis_032",
+      "sha256": "ab3a11a50e8bafbc488341f8560263d520bec4c927cc657b8be5e9cbbb027a57",
+      "true_total": "2192.04",
+      "dataset_type": "synthetic",
+      "capture_quality": "clean_render",
+      "length_group": "long",
+      "merchant_group": "market_02"
+    },
+    {
+      "doc_id": "fis_033",
+      "sha256": "a8336e276c5d6bb1734102fae9ee7de4819555344a4a9d1aac9344f050183e26",
+      "true_total": "880.57",
+      "dataset_type": "synthetic",
+      "capture_quality": "synthetically_degraded",
+      "length_group": "short",
+      "merchant_group": "market_03"
+    },
+    {
+      "doc_id": "fis_034",
+      "sha256": "948cf9add9f931bc636dcfadde15533c91b49649b4345ae70bf5c0192fd11bcf",
+      "true_total": "380.81",
+      "dataset_type": "synthetic",
+      "capture_quality": "clean_render",
+      "length_group": "short",
+      "merchant_group": "cafe_04"
+    },
+    {
+      "doc_id": "fis_035",
+      "sha256": "c05fb5ed210ea967aaf28f092805532392b8838a9889c1f3973777d34ffa5596",
+      "true_total": "354.35",
+      "dataset_type": "synthetic",
+      "capture_quality": "clean_render",
+      "length_group": "short",
+      "merchant_group": "cafe_05"
+    },
+    {
+      "doc_id": "fis_036",
+      "sha256": "31f4655faf83d6e28cf8fa1fec0bb07d8f0285341debb3d81aacd72dd4b96ded",
+      "true_total": "898.54",
+      "dataset_type": "synthetic",
+      "capture_quality": "synthetically_degraded",
+      "length_group": "long",
+      "merchant_group": "cafe_06"
+    },
+    {
+      "doc_id": "fis_037",
+      "sha256": "6d3456c9d4a8529b8368fb1880790620632b6666b8291c95411509fd9a146d46",
+      "true_total": "4298.54",
+      "dataset_type": "synthetic",
+      "capture_quality": "synthetically_degraded",
+      "length_group": "long",
+      "merchant_group": "fuel_07"
+    },
+    {
+      "doc_id": "fis_038",
+      "sha256": "012d29d47785685596c18d1bcfae2ecfbedef60a5af6fe1149723163b7a63a25",
+      "true_total": "2288.99",
+      "dataset_type": "synthetic",
+      "capture_quality": "synthetically_degraded",
+      "length_group": "long",
+      "merchant_group": "fuel_08"
+    },
+    {
+      "doc_id": "fis_039",
+      "sha256": "db5deda0dba1caa9f9dfb36c11ad687374ab8839980732e2f3509dad4e39ebfa",
+      "true_total": "476.77",
+      "dataset_type": "synthetic",
+      "capture_quality": "synthetically_degraded",
+      "length_group": "long",
+      "merchant_group": "bakery_09"
+    },
+    {
+      "doc_id": "fis_040",
+      "sha256": "c316957de7c3a00cfe8e90a205efe43a712f54586e9cf39e2671f02cd7f839ee",
+      "true_total": "516.78",
+      "dataset_type": "synthetic",
+      "capture_quality": "synthetically_degraded",
+      "length_group": "long",
+      "merchant_group": "bakery_10"
+    },
+    {
+      "doc_id": "fis_041",
+      "sha256": "f3b2463abc95b4a7b54122b9d4c94092d910033eabfa040237f3989848be76f9",
+      "true_total": "2434.11",
+      "dataset_type": "synthetic",
+      "capture_quality": "synthetically_degraded",
+      "length_group": "long",
+      "merchant_group": "market_01"
+    },
+    {
+      "doc_id": "fis_042",
+      "sha256": "ddc95e4b17aae5b7c5c37150aa6409ee6d580baa53c67e6815eec43b6ac382d0",
+      "true_total": "1532.29",
+      "dataset_type": "synthetic",
+      "capture_quality": "clean_render",
+      "length_group": "long",
+      "merchant_group": "market_02"
+    },
+    {
+      "doc_id": "fis_043",
+      "sha256": "59a19d905f314d6336f56db98f6411f090e886db26d766446dedb7e9f8ab6ba3",
+      "true_total": "1952.48",
+      "dataset_type": "synthetic",
+      "capture_quality": "synthetically_degraded",
+      "length_group": "long",
+      "merchant_group": "market_03"
+    },
+    {
+      "doc_id": "fis_044",
+      "sha256": "77e14eaa77236a2b3e5f6d9f045fcd24ac09a4fad0f1b4eaff2200a682143650",
+      "true_total": "244.84",
+      "dataset_type": "synthetic",
+      "capture_quality": "synthetically_degraded",
+      "length_group": "short",
+      "merchant_group": "cafe_04"
+    },
+    {
+      "doc_id": "fis_045",
+      "sha256": "0e0bf1f1d9690c457dd714f91aca3c58afde69eb39f1e13db0b5f4fbc7196a41",
+      "true_total": "337.79",
+      "dataset_type": "synthetic",
+      "capture_quality": "synthetically_degraded",
+      "length_group": "short",
+      "merchant_group": "cafe_05"
+    },
+    {
+      "doc_id": "fis_046",
+      "sha256": "8b3d969fcdbcaf6ce0bb8c134eb907b45a1ee71a2f141a740ca4adedbc98f988",
+      "true_total": "1028.41",
+      "dataset_type": "synthetic",
+      "capture_quality": "clean_render",
+      "length_group": "long",
+      "merchant_group": "cafe_06"
+    },
+    {
+      "doc_id": "fis_047",
+      "sha256": "ea88c496f992152d18f1320e725071a683a234be6458ade10308af0f24976fa2",
+      "true_total": "2750.30",
+      "dataset_type": "synthetic",
+      "capture_quality": "clean_render",
+      "length_group": "long",
+      "merchant_group": "fuel_07"
+    },
+    {
+      "doc_id": "fis_048",
+      "sha256": "25a7aa7dcf5e1874cd2842c8a64acddb45cdd399655010c26ff95763622d3392",
+      "true_total": "4551.01",
+      "dataset_type": "synthetic",
+      "capture_quality": "clean_render",
+      "length_group": "long",
+      "merchant_group": "fuel_08"
+    },
+    {
+      "doc_id": "fis_049",
+      "sha256": "a6afa241382b27ff9dbfd79eaff71582386e4615bc89b66106a807d970c4ceef",
+      "true_total": "192.80",
+      "dataset_type": "synthetic",
+      "capture_quality": "clean_render",
+      "length_group": "short",
+      "merchant_group": "bakery_09"
+    },
+    {
+      "doc_id": "fis_050",
+      "sha256": "356b27201c036df047a44930f228f083de275df1a6448e2ef8214c9d0569acb9",
+      "true_total": "399.63",
+      "dataset_type": "synthetic",
+      "capture_quality": "clean_render",
+      "length_group": "short",
+      "merchant_group": "bakery_10"
+    }
+  ],
+  "prompts": {
+    "en": "answer en What is the final total amount to pay on this receipt? Give only the numeric amount with two decimal digits.",
+    "tr": "answer tr Bu fişte ödenecek nihai toplam tutar nedir? Yalnızca iki ondalık basamaklı sayısal tutarı yaz."
+  },
+  "source_sha256": "c4fe433b601d7be9748e2809fc7594e6463bc1ec256bf228c3e95e6bb72d4652",
+  "package_version": "0.3.0",
+  "dtype": "float16",
+  "max_new_tokens": 32,
+  "sampling": false,
+  "seed": 2026,
+  "attention": "eager",
+  "model_revisions": {
+    "224": "8e40ab4cc5df93dfb7fd2fff754bcdff8b62ee78",
+    "448": "1406c92ec87d32cc6b983239278901b904ba7a51"
+  },
+  "started_utc": "2026-10-27T07:04:07.140354+00:00",
+  "python": "3.13.16",
+  "versions": {
+    "torch": "2.11.0+cu130",
+    "transformers": "4.57.1",
+    "accelerate": "1.11.0",
+    "huggingface_hub": "0.36.0",
+    "pillow": "11.3.0"
+  },
+  "gpu_name": "Tesla T4",
+  "gpu_total_gb": 14.56317138671875
+}

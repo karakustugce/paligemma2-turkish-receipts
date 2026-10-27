@@ -1,0 +1,143 @@
+{
+  "dataset_type": "synthetic",
+  "conditions": [
+    {
+      "resolution": 224,
+      "prompt_language": "en",
+      "n": 50,
+      "correct": 38,
+      "accuracy": 0.76,
+      "accuracy_wilson95_low": 0.6258705062480763,
+      "accuracy_wilson95_high": 0.8570274759812779,
+      "wrong_numeric_total": 9,
+      "format_or_unreadable": 3,
+      "mean_absolute_error_numeric_answers_only": 255.33489361702127,
+      "median_generation_seconds": 0.4084665095000446,
+      "median_preprocess_seconds": 0.010088453499975003,
+      "max_gpu_allocated_gb": 5.7200703620910645
+    },
+    {
+      "resolution": 224,
+      "prompt_language": "tr",
+      "n": 50,
+      "correct": 36,
+      "accuracy": 0.72,
+      "accuracy_wilson95_low": 0.5833461285401034,
+      "accuracy_wilson95_high": 0.8252598564231963,
+      "wrong_numeric_total": 4,
+      "format_or_unreadable": 10,
+      "mean_absolute_error_numeric_answers_only": 88881.67375,
+      "median_generation_seconds": 0.461431136500039,
+      "median_preprocess_seconds": 0.01008524949997991,
+      "max_gpu_allocated_gb": 5.722196102142334
+    },
+    {
+      "resolution": 448,
+      "prompt_language": "en",
+      "n": 50,
+      "correct": 33,
+      "accuracy": 0.66,
+      "accuracy_wilson95_low": 0.5215356854148285,
+      "accuracy_wilson95_high": 0.7756323036493895,
+      "wrong_numeric_total": 10,
+      "format_or_unreadable": 7,
+      "mean_absolute_error_numeric_answers_only": 402.2651162790698,
+      "median_generation_seconds": 0.6963839649999386,
+      "median_preprocess_seconds": 0.0169600360000004,
+      "max_gpu_allocated_gb": 5.88072395324707
+    },
+    {
+      "resolution": 448,
+      "prompt_language": "tr",
+      "n": 50,
+      "correct": 31,
+      "accuracy": 0.62,
+      "accuracy_wilson95_low": 0.4815019502239357,
+      "accuracy_wilson95_high": 0.7413740415742278,
+      "wrong_numeric_total": 5,
+      "format_or_unreadable": 14,
+      "mean_absolute_error_numeric_answers_only": 182.6272222222222,
+      "median_generation_seconds": 0.7654006180000579,
+      "median_preprocess_seconds": 0.017154163999975935,
+      "max_gpu_allocated_gb": 5.8828229904174805
+    }
+  ],
+  "paired": {
+    "resolution_en": {
+      "n": 50,
+      "condition_key": "resolution",
+      "first": 224,
+      "second": 448,
+      "both_correct": 27,
+      "both_wrong": 6,
+      "only_224_correct": 11,
+      "only_448_correct": 6,
+      "accuracy_difference_448_minus_224": -0.1,
+      "paired_bootstrap95": [
+        -0.26,
+        0.06
+      ],
+      "mcnemar_exact_p": 0.332305908203125,
+      "bootstrap_seed": 2026,
+      "bootstrap_samples": 10000
+    },
+    "resolution_tr": {
+      "n": 50,
+      "condition_key": "resolution",
+      "first": 224,
+      "second": 448,
+      "both_correct": 27,
+      "both_wrong": 10,
+      "only_224_correct": 9,
+      "only_448_correct": 4,
+      "accuracy_difference_448_minus_224": -0.1,
+      "paired_bootstrap95": [
+        -0.24,
+        0.04
+      ],
+      "mcnemar_exact_p": 0.266845703125,
+      "bootstrap_seed": 2026,
+      "bootstrap_samples": 10000
+    },
+    "language_224": {
+      "n": 50,
+      "condition_key": "prompt_language",
+      "first": "en",
+      "second": "tr",
+      "both_correct": 31,
+      "both_wrong": 7,
+      "only_en_correct": 7,
+      "only_tr_correct": 5,
+      "accuracy_difference_tr_minus_en": -0.04,
+      "paired_bootstrap95": [
+        -0.18,
+        0.1
+      ],
+      "mcnemar_exact_p": 0.7744140625,
+      "bootstrap_seed": 2026,
+      "bootstrap_samples": 10000
+    },
+    "language_448": {
+      "n": 50,
+      "condition_key": "prompt_language",
+      "first": "en",
+      "second": "tr",
+      "both_correct": 24,
+      "both_wrong": 10,
+      "only_en_correct": 9,
+      "only_tr_correct": 7,
+      "accuracy_difference_tr_minus_en": -0.04,
+      "paired_bootstrap95": [
+        -0.2,
+        0.12
+      ],
+      "mcnemar_exact_p": 0.803619384765625,
+      "bootstrap_seed": 2026,
+      "bootstrap_samples": 10000
+    }
+  },
+  "primary_comparison": "resolution_tr",
+  "scope": "Programmatically rendered synthetic Turkish-style receipts; results do not estimate performance on real receipts.",
+  "human_time_status": "Not measured; model latency is not human labor.",
+  "economic_analysis_status": "Omitted for synthetic data; synthetic accuracy must not be translated into real-world labor savings."
+}
